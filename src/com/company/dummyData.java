@@ -33,4 +33,19 @@ public class dummyData {
         return allPlayer;
     }
 
+    public static String createPlayersSummary(){
+
+        String date = library.getLocalTimeAndDate();
+
+        String summary = "{\n" +
+                "  \"join\" : \"" + date + "\",\n" +
+                "  \"lastVisit\" : \"" + date + "\",\n" +
+                "  \"balance\" : 100,\n" +
+                "  \"totalBet\" : 0,\n" +
+                "  \"totalWon\" : 0,\n" +
+                "  \"totalLoss\" : 0\n" +
+                "}";
+        return summary;
+    }
+
 }

@@ -70,6 +70,11 @@ public class Main {
             }
         }
 
+        System.out.println(dictionary.color("yellow") + dictionary.style("bold") + "\nThank you for your participation. Please leave us feedback on\n" +
+                "rsashahed123@gmail.com. We will be appritieat your suggetions and thought on this project.");
+
+        System.out.println(dictionary.color("yellow") + dictionary.style("bold") + "\n\nSHAHED@2020");
+        System.exit(0);
 
     }
 }

@@ -5,6 +5,12 @@ import java.util.List;
 
 class database extends Thread{
 
+    public static String currentPlayer;
+    public static String result;
+
+    public static int totalBet = 0;
+    public static int totalPayout = 0;
+
     public static List<String> players = new LinkedList<>();
     public static List<String> bets = new LinkedList<>();
     public static List<String> winners = new LinkedList<>();

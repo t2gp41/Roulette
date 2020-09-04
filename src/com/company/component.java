@@ -8,12 +8,64 @@ import java.util.*;
 
 class component {
 
-    public static void welcomeBanner() {
-        System.out.println("\n" + dictionary.color("green") + dictionary.style("bold") + "+--------------------+");
+    public static void welcomeBanner(){
+        System.out.println("\n" + dictionary.color("green") + dictionary.style("bold") +"+--------------------+");
         System.out.println("|      " + dictionary.values("appName").toUpperCase() + "      |");
         System.out.println("+--------------------+" + dictionary.style("reset"));
     }
 
+    public static String clearNickName(String warning, String showInput){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\n" + dictionary.color("green") + showInput + " : " + dictionary.style("reset"));
+        String nickName = scanner.nextLine();
+        String result = "";
+        boolean rotation = false;
+        boolean error = true;
+        while(error){
+            if(nickName == null || nickName.isEmpty()){
+                if(!rotation) {
+                    System.out.println("\n" + dictionary.color("red") + warning + dictionary.style("reset"));
+                }
+                else{
+                    rotation = false;
+                }
+
+                System.out.print("\n" + dictionary.color("green") + showInput + " : " + dictionary.style("reset"));
+                nickName = scanner.nextLine();
+            }
+            else{
+                if(library.countWord(nickName) > 1){
+                    System.out.print("\n" + dictionary.color("purple") + dictionary.values("suggestNickName_01") + " " + nickNameFormat((nickName.trim()).replaceAll(" ", "_")) + " " + dictionary.values("suggestNickName_02") + dictionary.style("reset") + "\n");
+                    System.out.print(dictionary.color("yellow") + dictionary.values("confirmNickName") + " : " + dictionary.style("reset"));
+                    String confirmation = scanner.nextLine();
+                    if((confirmation.toLowerCase()).equals("y")){
+                        error = false;
+                        result = nickNameFormat((nickName.trim()).replaceAll(" ", "_"));
+                    }
+                    else{
+                        rotation = true;
+                        nickName = "";
+                    }
+                }
+                else{
+                    error = false;
+                    result = nickNameFormat((nickName.trim()).replaceAll(" ", "_"));
+                }
+            }
+        }
+
+        database.currentPlayer = result;
+        return result;
+    }
+
+    private static String nickNameFormat(String nickName){
+        String fNickName = nickName.substring(0, 1).toUpperCase() + nickName.substring(1).toLowerCase();
+        if(fNickName.length() > 13){
+            return (fNickName.substring(0, 10)).trim();
+        }else {
+            return fNickName;
+        }
+    }
 
     public static List<String> createTable(String nickName){
         List<String> tableDetails = new LinkedList<>();
@@ -237,6 +289,7 @@ class component {
         }
         return result;
     }
+
     public static int betAmountValidator(String amount){
         int result = 0;
         int cleanMyBet = Integer.parseInt(amount);
@@ -252,6 +305,11 @@ class component {
         database.bets.add(database.currentPlayer + "," + whichNumberToBet + "," + howMuchToBet);
         String[] playerDetails = (database.players.get(0)).split(",");
 
+        int currentBalance = Integer.parseInt(playerDetails[1]);
+        int remainingBalance = (currentBalance - howMuchToBet);
+
+        database.players.set(0, (playerDetails[0] + "," + remainingBalance));
+        database.amountOfBets++;
 
         logger.player(database.currentPlayer, remainingBalance);
         logger.playerStatus(database.currentPlayer, howMuchToBet);
@@ -282,6 +340,7 @@ class component {
             }
         }
     }
+
     public static String whichNumberToBet(String reffrence){
         List<String> allOptions = new ArrayList<>();
         for(int i = 1; i < 37; i++){
@@ -316,7 +375,11 @@ class component {
         System.out.printf("%13s", "Outcome");
         System.out.printf("%13s", "Winnings");
         System.out.println("" + dictionary.style("reset") + dictionary.color("purple"));
-
+        System.out.printf("%13s", "--------");
+        System.out.printf("%13s", "-----");
+        System.out.printf("%13s", "--------");
+        System.out.printf("%13s", "---------");
+        System.out.printf("%13s", "----------");
 
         for(int a = 0; a < database.bets.size(); a++){
             String[] tmpDetails = (database.bets.get(a)).split(",");
@@ -376,4 +439,79 @@ class component {
         System.out.println("");
         printPlayersBalance();
     }
+
+    public static boolean checkForWinner(String myBet, String winner){
+        boolean result = false;
+
+        if(myBet.equals(winner)){
+            result  = true;
+        }
+
+        int number = Integer.parseInt(winner);
+
+        if((myBet.toLowerCase()).equals("e") && (number % 2) == 0){
+            result  = true;
+        }
+
+        if((myBet.toLowerCase()).equals("o") && (number % 2) != 0){
+            result  = true;
+        }
+
+        return result;
+    }
+
+    public static int calculateTheWinning(String bet, String amount){
+        int result = 0;
+        try {
+            int ifInteger = Integer.parseInt(bet);
+
+            if (ifInteger % 1 == 0 && ifInteger > 0 && ifInteger <= 36) {
+                result = (Integer.parseInt(amount) * 35);
+            }
+        }catch (Exception e){
+            if((bet.toLowerCase()).equals("e")){
+                result = (Integer.parseInt(amount));
+            }
+            else if((bet.toLowerCase()).equals("o")){
+                result = (Integer.parseInt(amount));
+            }
+        }
+        return result;
+    }
+
+    public static void updateCurrentBalance(String player, int amount){
+        for (int x = 0; x < database.players.size(); x++) {
+            String[] tmpDetails = (database.players.get(x)).split(",");
+            if(tmpDetails[0].equals(player)){
+                database.players.set(x, (player + "," + amount));
+                logger.player(player, amount);
+                break;
+            }
+        }
+    }
+
+    public static void payout(String player, int amount){
+        for (int b = 0; b < database.players.size(); b++) {
+            String[] tmpDetails = (database.players.get(b)).split(",");
+            if(tmpDetails[0].equals(player)){
+                int newBalance = Integer.parseInt(tmpDetails[1]) + amount;
+                database.players.set(b, (player + "," + newBalance));
+                logger.player(player, newBalance);
+                break;
+            }
+        }
+    }
+
+    public static int getPlayersCurrentBalance(String player){
+        int balance = 0;
+        for (int c = 0; c < database.players.size(); c++) {
+            String[] tmpDetails = (database.players.get(c)).split(",");
+            if(tmpDetails[0].equals(player)){
+                balance = Integer.parseInt(tmpDetails[1]);
+                break;
+            }
+        }
+        return balance;
+    }
+
 }
