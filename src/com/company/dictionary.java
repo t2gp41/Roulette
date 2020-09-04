@@ -32,6 +32,13 @@ class dictionary {
         allValues.put("askNickName", "Please enter your username");
         allValues.put("nickNameError", "SORRY! You are entering an empty username.");
 
+        allValues.put("suggestNickName_01", "Dose");
+        allValues.put("suggestNickName_02", "sounds exciting as your username?");
+        allValues.put("confirmNickName", "Please press Y to continue otherwise press N to try a new username");
+
+        allValues.put("placeYourBet", "Place Your Bet 1-36, e(even), o(odd)");
+        allValues.put("placeYourMoney", "How much would you like to bet on");
+
         return allValues.getOrDefault(reference, "");
     }
 

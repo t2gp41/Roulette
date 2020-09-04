@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class library {
+class library {
 
     public static int countWord(String input){
         if(input == null || input.isEmpty()){

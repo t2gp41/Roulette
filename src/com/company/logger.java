@@ -1,5 +1,12 @@
 package com.company;
 
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class logger {
     public static void system(){
 
@@ -60,5 +67,187 @@ public class logger {
 
         library.createFile("com.example.roulette.logs/system/" + fileCount() + ".json", database.logs.get(logIndex));
     }
+
+    public static String fileCount(){
+        File directory=new File("com.example.roulette.logs/system/");
+        String fileCount = String.valueOf(directory.list().length);
+
+        String pattern = "EEEEE dd HH:mm:ss a";
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat(pattern, new Locale("en", "ZA"));
+
+        return "logs-" + fileCount + " " + simpleDateFormat.format(new Date());
+    }
+
+    public static void player(String nickName, int amount){
+
+        Object fileData = library.readJsonFile("com.example.roulette.logs/players/" + nickName + "/summary.json");
+        JSONObject playerSummaryObj = (JSONObject)fileData;
+
+        String join = library.getLocalTimeAndDate();
+        if(playerSummaryObj.containsKey("join")){
+            join = playerSummaryObj.get("join").toString();
+        }
+
+        int totalBet = 0;
+        if(playerSummaryObj.containsKey("totalBet")){
+            totalBet = ((Long) playerSummaryObj.get("totalBet")).intValue();
+        }
+
+        int totalWon = 0;
+        if(playerSummaryObj.containsKey("totalWon")){
+            totalWon = ((Long) playerSummaryObj.get("totalWon")).intValue();
+        }
+
+        int totalLoss = 0;
+        if(playerSummaryObj.containsKey("totalLoss")){
+            totalLoss = ((Long) playerSummaryObj.get("totalLoss")).intValue();
+        }
+
+        String summary = "{\n" +
+                "  \"join\" : \"" + join + "\",\n" +
+                "  \"lastVisit\" : \"" + library.getLocalTimeAndDate() + "\",\n" +
+                "  \"balance\" : "+ amount + ",\n" +
+                "  \"totalBet\" : " + totalBet + ",\n" +
+                "  \"totalWon\" : " + totalWon + ",\n" +
+                "  \"totalLoss\" : " + totalLoss + "\n" +
+                "}";
+
+        library.createFile("com.example.roulette.logs/players/" + nickName + "/summary.json", summary);
+    }
+
+    public static void playerStatus(String nickName, int amount){
+
+        Object fileData = library.readJsonFile("com.example.roulette.logs/players/" + nickName + "/summary.json");
+        JSONObject playerSummaryObj = (JSONObject)fileData;
+
+        String join = library.getLocalTimeAndDate();
+        if(playerSummaryObj.containsKey("join")){
+            join = playerSummaryObj.get("join").toString();
+        }
+
+        int balance = 0;
+        if(playerSummaryObj.containsKey("balance")){
+            balance = ((Long) playerSummaryObj.get("balance")).intValue();
+        }
+
+        int totalBet = 0;
+        if(playerSummaryObj.containsKey("totalBet")){
+            totalBet = ((Long) playerSummaryObj.get("totalBet")).intValue();
+        }
+
+        totalBet += amount;
+
+        int totalWon = 0;
+        if(playerSummaryObj.containsKey("totalWon")){
+            totalWon = ((Long) playerSummaryObj.get("totalWon")).intValue();
+        }
+
+        int totalLoss = 0;
+        if(playerSummaryObj.containsKey("totalLoss")){
+            totalLoss = ((Long) playerSummaryObj.get("totalLoss")).intValue();
+        }
+
+        String summary = "{\n" +
+                "  \"join\" : \"" + join + "\",\n" +
+                "  \"lastVisit\" : \"" + library.getLocalTimeAndDate() + "\",\n" +
+                "  \"balance\" : "+ balance + ",\n" +
+                "  \"totalBet\" : " + totalBet + ",\n" +
+                "  \"totalWon\" : " + totalWon + ",\n" +
+                "  \"totalLoss\" : " + totalLoss + "\n" +
+                "}";
+
+        library.createFile("com.example.roulette.logs/players/" + nickName + "/summary.json", summary);
+    }
+
+    public static void playerCredit(String nickName, int amount){
+
+        Object fileData = library.readJsonFile("com.example.roulette.logs/players/" + nickName + "/summary.json");
+        JSONObject playerSummaryObj = (JSONObject)fileData;
+
+        String join = library.getLocalTimeAndDate();
+        if(playerSummaryObj.containsKey("join")){
+            join = playerSummaryObj.get("join").toString();
+        }
+
+        int balance = 0;
+        if(playerSummaryObj.containsKey("balance")){
+            balance = ((Long) playerSummaryObj.get("balance")).intValue();
+        }
+
+        int totalBet = 0;
+        if(playerSummaryObj.containsKey("totalBet")){
+            totalBet = ((Long) playerSummaryObj.get("totalBet")).intValue();
+        }
+
+        int totalWon = 0;
+        if(playerSummaryObj.containsKey("totalWon")){
+            totalWon = ((Long) playerSummaryObj.get("totalWon")).intValue();
+        }
+
+        totalWon += amount;
+
+        int totalLoss = 0;
+        if(playerSummaryObj.containsKey("totalLoss")){
+            totalLoss = ((Long) playerSummaryObj.get("totalLoss")).intValue();
+        }
+
+        String summary = "{\n" +
+                "  \"join\" : \"" + join + "\",\n" +
+                "  \"lastVisit\" : \"" + library.getLocalTimeAndDate() + "\",\n" +
+                "  \"balance\" : "+ balance + ",\n" +
+                "  \"totalBet\" : " + totalBet + ",\n" +
+                "  \"totalWon\" : " + totalWon + ",\n" +
+                "  \"totalLoss\" : " + totalLoss + "\n" +
+                "}";
+
+        library.createFile("com.example.roulette.logs/players/" + nickName + "/summary.json", summary);
+    }
+
+
+    public static void playerDisCredit(String nickName, int amount){
+
+        Object fileData = library.readJsonFile("com.example.roulette.logs/players/" + nickName + "/summary.json");
+        JSONObject playerSummaryObj = (JSONObject)fileData;
+
+        String join = library.getLocalTimeAndDate();
+        if(playerSummaryObj.containsKey("join")){
+            join = playerSummaryObj.get("join").toString();
+        }
+
+        int balance = 0;
+        if(playerSummaryObj.containsKey("balance")){
+            balance = ((Long) playerSummaryObj.get("balance")).intValue();
+        }
+
+        int totalBet = 0;
+        if(playerSummaryObj.containsKey("totalBet")){
+            totalBet = ((Long) playerSummaryObj.get("totalBet")).intValue();
+        }
+
+        int totalWon = 0;
+        if(playerSummaryObj.containsKey("totalWon")){
+            totalWon = ((Long) playerSummaryObj.get("totalWon")).intValue();
+        }
+
+        int totalLoss = 0;
+        if(playerSummaryObj.containsKey("totalLoss")){
+            totalLoss = ((Long) playerSummaryObj.get("totalLoss")).intValue();
+        }
+
+        totalLoss += amount;
+
+        String summary = "{\n" +
+                "  \"join\" : \"" + join + "\",\n" +
+                "  \"lastVisit\" : \"" + library.getLocalTimeAndDate() + "\",\n" +
+                "  \"balance\" : "+ balance + ",\n" +
+                "  \"totalBet\" : " + totalBet + ",\n" +
+                "  \"totalWon\" : " + totalWon + ",\n" +
+                "  \"totalLoss\" : " + totalLoss + "\n" +
+                "}";
+
+        library.createFile("com.example.roulette.logs/players/" + nickName + "/summary.json", summary);
+    }
+
 
 }

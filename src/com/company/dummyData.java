@@ -18,5 +18,19 @@ public class dummyData {
             "   ]\n" +
             "}";
 
+    public static JSONArray dummyPlayerArray(){
+        JSONArray allPlayer = new JSONArray();
+        allPlayer.add("IronMan");
+        allPlayer.add("AntMan");
+        allPlayer.add("Hulk");
+        allPlayer.add("Thor");
+        allPlayer.add("Loki");
+        allPlayer.add("Falcon");
+        allPlayer.add("Nick");
+        allPlayer.add("Gamora");
+        allPlayer.add("BlackPanther");
+        allPlayer.add("Drax");
+        return allPlayer;
+    }
 
 }
