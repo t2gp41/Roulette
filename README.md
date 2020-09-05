@@ -55,3 +55,6 @@ DEMO DATA
 EVENT RECOVERY
 Please kill the program and run it again. If you remember the last username that you entered to start the game, you will able to play the game from that state that you left last time. That means once you resisted you not going to lose your money when you kill the game.
 
+# FOR COLOR MODE PLEASE USE WINDOWS 10 OR LINUX TERMINAL. 
+# FOR MORE INFO PLEASE SEARCH ANSI COMMAND AND IT'S LIMITATIONS ON WINDOWS
+
